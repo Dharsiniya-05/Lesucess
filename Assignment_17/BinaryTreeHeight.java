@@ -1,0 +1,51 @@
+import java.util.*;
+
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int val) { this.val = val; }
+}
+
+public class BinaryTreeHeight{
+    public static TreeNode buildTree(String[] input) {
+        if (input.length == 0 || input[0].equals("-1")) return null;
+
+        TreeNode root = new TreeNode(Integer.parseInt(input[0]));
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int i = 1;
+
+        while (!queue.isEmpty() && i < input.length) {
+            TreeNode node = queue.poll();
+
+            if (!input[i].equals("-1")) {
+                node.left = new TreeNode(Integer.parseInt(input[i]));
+                queue.add(node.left);
+            }
+            i++;
+            if (i >= input.length) break;
+
+            if (!input[i].equals("-1")) {
+                node.right = new TreeNode(Integer.parseInt(input[i]));
+                queue.add(node.right);
+            }
+            i++;
+        }
+
+        return root;
+    }
+
+    public static int height(TreeNode root) {
+        if (root == null) return 0;
+        return 1 + Math.max(height(root.left), height(root.right));
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String[] input = sc.nextLine().split(" ");
+        TreeNode root = buildTree(input);
+
+        int h = height(root);
+        System.out.println("Height of the Tree: " + h);
+    }
+}
